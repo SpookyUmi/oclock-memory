@@ -1,0 +1,20 @@
+.line {
+  display: flex;
+  justify-content: center;
+}
+
+.card {
+  margin: 1rem;
+  border-radius: 5px;
+  width: 100px;
+  height: 100px;
+}
+
+.inactive {
+  background-color: #9b9b9b;
+}
+
+.active {
+  background-color: white;
+  background-image: url("../../assets/cards.png");
+}
