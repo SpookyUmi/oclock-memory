@@ -1,0 +1,13 @@
+.timer_container {
+  margin: 0 auto;
+  width: 600px;
+  height: 3rem;
+  background-color: #e0dfff;
+  border: 1px solid #282c34;
+}
+
+.timer {
+  height: 3rem;
+  background-color: red;
+  transition: ease-in-out 300ms;
+}

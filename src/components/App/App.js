@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
 import Axios from 'axios';
-import logo from '../../logo.svg';
 import Cards from '../Cards/Cards.js'
 import './App.scss';
+import Timer from "../Timer/Timer.js";
 
 function App() {
   // Je crée mon state local
@@ -56,6 +56,7 @@ function App() {
         <h1>Memory</h1>
       </header>
       {cards && <Cards cards={cards} />}
+      <Timer />
     </div>
   );
 }

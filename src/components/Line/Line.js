@@ -1,25 +1,12 @@
-import { useState, useEffect } from 'react';
 import './styles.scss';
 
-function Line({ row }) {
-  //TODO remonter la déclaration du state au composant parent ()
-  const [firstCard, setFirstCard] = useState('');
-  const [secondCard, setSecondCard] = useState('');
-  const [flippedCards, setFlippedCards] = useState(null);
-
-  function isNameTheSame() {
-    const first = firstCard.split("-pair")[0];
-    const second = secondCard.split("-pair")[0];
-    return first === second;
-  }
-  //TODO si les cartes match, je push les 2 names dans un array matchedCards (à initier dans le parent)
-
+function Line({ row, firstCard, setFirstCard, secondCard, setSecondCard, matchedCards }) {
   // useEffect(() => {
-    // if (!flippedCards) {
-    //   setFlippedCards([card.name]);
-    // } else {
-    //   setFlippedCards([...flippedCards, card.name])
-    // }
+  // if (!flippedCards) {
+  //   setFlippedCards([card.name]);
+  // } else {
+  //   setFlippedCards([...flippedCards, card.name])
+  // }
   //   if (flippedCards && flippedCards.length === 2) {
   //     setTimeout(() => {
   //       setFlippedCards(null)
@@ -36,8 +23,8 @@ function Line({ row }) {
           <article
             id={card._id}
             key={card.name}
-            //TODO includes avec matchedCards
-            className={`card ${firstCard === card.name || secondCard === card.name ? 'active' : 'inactive'}`}
+            // commenter la ternaire ici
+            className={`card ${matchedCards.includes(card.name) || firstCard === card.name || secondCard === card.name ? 'active' : 'inactive'}`}
             onClick={() => {
               if (firstCard && secondCard) {
                 setFirstCard(card.name);
