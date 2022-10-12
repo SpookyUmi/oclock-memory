@@ -1,39 +1,43 @@
 import { useEffect, useState } from "react";
-import Axios from 'axios';
-import Cards from '../Cards/Cards.js'
-import './App.scss';
+import Axios from "axios";
+import Cards from "../Cards/Cards.js"
+import "./App.scss";
 import Timer from "../Timer/Timer.js";
 
 function App() {
   // Je crée mon state local
-  // L'array de cartes récupéré depuis le back. Il est stocké dans cards et mis à jour grâce à setCards
-  const [cards, setCards] = useState(null);
-  // Un state pour commencer une partie et lancer le timer.
-  const [game, setGame] = useState(false);
-  // L'array où on stocke toutes les paires trouvées.
-  const [matchedCards, setMatchedCards] = useState([]);
-  // Si on gagne, on stocke notre temps ici.
-  const [score, setScore] = useState(0);
-  // Quand on gagne, ce state passe à "true"
-  const [win, setWin] = useState(false);
-  // Quand on perd, ce state passe à "true"
-  const [loose, setLoose] = useState(false);
+  const [cards, setCards] = useState(null); // L'array de cartes récupéré depuis le back. Il est stocké dans cards et mis à jour grâce à setCards
+  const [game, setGame] = useState(false); // Un state pour commencer une partie et lancer le timer.
+  const [gameStatus, setGameStatus] = useState("pending"); // Le statut de la partie : "pending" par défaut, "won" quand on gagne, "lost" quand on perd.
+  const [matchedCards, setMatchedCards] = useState([]); // L'array où on stocke toutes les paires trouvées.
+  const [score, setScore] = useState(0); // Si on gagne, on stocke notre temps ici.
   // On définit le temps que dure une partie (en sec)
-  const timer = 15;
+  const timer = 240;
+
+  // Une fonction pour reset le jeu à l'état initial.
+  // Gagner ou perdre termine la partie, on réinitialise le state.
+  function resetGame(status) {
+    // Déclenchement d'un alert quand on gagne ou quand on perd.
+    alert(status === "won" ? "Vous avez gagné !!!" : "Vous avez perdu...");
+    setGame(false);
+    setMatchedCards([]);
+    setGameStatus("pending");
+    setScore(0);
+  }
 
   // J'utilise le Hook d'effet useEffect de React, qui permet d'exécuter des instructions
   // à un moment précis du lifecycle du composant : à la fin du render.
   // Avec les Classes, on le remplacerait par componentDidMount, componentDidUpdate et componentWillUnmount.
   useEffect(() => {
-    // Ma fonction asynchrone qui appelle mon back et recoit les cartes
+    // Ma fonction asynchrone appelle mon back et recoit les cartes
     async function loadCards() {
       try {
         const response = await Axios({
-          method: 'GET',
+          method: "GET",
           url: `${process.env.REACT_APP_API_URL}/cards`
         });
         // Si ca ne se passe pas bien, j'envoie un message d'erreur
-        if (response.status !== 200) return console.error('ERROR');
+        if (response.status !== 200) return console.error("ERROR", response.error);
 
         // Pour notre Memory, on a besoin de dupliquer nos cartes et de les
         // distribuer aléatoirement.
@@ -58,47 +62,54 @@ function App() {
         console.log(error);
       }
     }
+
+    async function loadScores() {
+      try {
+        const response = await Axios({
+          method: "GET",
+          url: `${process.env.REACT_APP_API_URL}/scores`
+        });
+        // Si ca ne se passe pas bien, j'envoie un message d'erreur
+        if (response.status !== 200) return console.error("ERROR", response.error);
+
+        console.log("Les scores :", response.data.formattedBestScores);
+      } catch (error) {
+        console.log(error);
+      }
+    }
     // On exécute la fonction pour recevoir nos cartes et les mélanger à chaque fin de render de notre app.
     loadCards();
+    loadScores();
 
     // On stocke nos scores en DB et on les update sur le front
     async function stockScore() {
       try {
+        console.log("mon score ;", score);
         const response = await Axios({
-          method: 'POST',
+          method: "POST",
           url: `${process.env.REACT_APP_API_URL}/scores`,
-          body: score
+          body: {
+            "score": score,
+          }
         });
-        if (response.status !== 200) return console.error('ERROR');
+        if (response.status !== 200) return console.error("ERROR", response.error);
 
-        console.log(response.data.score);
+        console.log(response.data.newScore);
 
-        //TODO créer un state de scores
-        //TODO update le state des scores ici
       } catch (error) {
         console.log(error);
       }
     }
 
-    // Déclenchement d'un alert quand on gagne ou quand on perd.
-    // Gagner ou perdre termine la partie, on réinitialise le state.
-    if (win) {
+    // J'appelle resetGame() quand la partie est finie.
+    if (gameStatus === "won") {
       stockScore();
-      alert("Vous avez gagné !!!");
-      setGame(false);
-      setTimeout(() => {
-        setMatchedCards([]);
-      }, 1000);
-      setWin(false);
-      setScore(0);
-    } else if (loose) {
-      setGame(false);
-      alert("Vous avez perdu...");
-      setMatchedCards([]);
-      setLoose(false);
+      resetGame(gameStatus);
+    } else if (gameStatus === "lost") {
+      resetGame(gameStatus);
     }
     // J'ajoute ici mes dépendances qui déclencheront un re-render à leur changement.
-  }, [win, score, loose]);
+  }, [score, gameStatus]);
 
   return (
     <div className="App">
@@ -107,7 +118,7 @@ function App() {
       </header>
       <button onClick={() => {
         setGame(true);
-      }} className={`${game ? 'button_inactive' : 'button_active'}`}>Lancer une partie</button>
+      }} className={`${game ? "button_inactive" : "button_active"}`}>Lancer une partie</button>
       {cards && <Cards
         game={game}
         cards={cards}
@@ -116,13 +127,13 @@ function App() {
       />}
       <Timer
         game={game}
+        gameStatus={gameStatus}
+        setGameStatus={setGameStatus}
         setScore={setScore}
         matchedCards={matchedCards}
         timer={timer}
-        win={win}
-        setWin={setWin}
-        setLoose={setLoose}
         score={score}
+        numberOfCards={cards?.length}
       />
     </div>
   );

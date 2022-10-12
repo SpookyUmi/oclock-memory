@@ -1,16 +1,14 @@
 import { useState, useEffect } from 'react';
-// lib pour générer un id safe et performant.
-import { nanoid } from 'nanoid';
+import { nanoid } from 'nanoid'; // lib pour générer un id safe et performant
 import './styles.scss';
 import createGrid from '../../utils/createGrid';
 import Line from '../Line/Line';
 
 function Cards({ cards, game, matchedCards, setMatchedCards }) {
-  // Mon array grid, ma grille dans laquelle je vais push mes lignes de cartes.
+  // Ma grille dans laquelle je vais push mes lignes de cartes.
   const grid = createGrid(6, 6, cards);
-  // On stocke les 2 cartes retournées
-  const [firstCard, setFirstCard] = useState('');
-  const [secondCard, setSecondCard] = useState('');
+  const [firstCard, setFirstCard] = useState(''); // On stocke la première carte retournée
+  const [secondCard, setSecondCard] = useState(''); // On stocke la seconde carte retournée
 
   useEffect(() => {
     // On regarde si les 2 cartes retournées forment une paire.
@@ -22,8 +20,7 @@ function Cards({ cards, game, matchedCards, setMatchedCards }) {
     }
 
     function computeGame() {
-      // Si nos 2 cartes ne forment pas une paire,
-      // on réinitialise le state après 1 seconde,
+      // Si nos 2 cartes ne forment pas une paire, on réinitialise le state après 1 seconde,
       // le temps au user de mémoriser les cartes (pas trop longtemps quand même, on veut du challenge)
       if (!isNameTheSame()) {
         setTimeout(() => {
