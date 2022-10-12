@@ -11,3 +11,18 @@
   font-size: calc(10px + 2vmin);
   color: white;
 }
+
+.button {
+  &_active {
+    margin-top: 1rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      font-size: 1.5rem;
+      background-color: #e0dfff;
+      color: #282c34;
+  }
+  &_inactive {
+    display: none;
+  }
+}
