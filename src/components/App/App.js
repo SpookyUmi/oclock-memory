@@ -39,7 +39,6 @@ function App() {
       try {
         const response = await Axios({
           method: "GET",
-          // à remplacer par REACT_APP_API_URL en local
           url: `${APIURL}/cards`
         });
         // Si mon back me renvoie autre chose qu'une 200, j'affiche un message d'erreur en console
@@ -70,13 +69,11 @@ function App() {
       try {
         const response = await Axios({
           method: "GET",
-          // à remplacer par REACT_APP_API_URL en local
           url: `${APIURL}/scores`
         });
         // Si ca ne se passe pas bien, j'envoie un message d'erreur
         if (response.status !== 200) return console.error("ERROR", response.error);
 
-        console.log("Les scores :", response.data.formattedBestScores);
         setBestScores(response.data.formattedBestScores);
       } catch (error) {
         console.log(error);
@@ -89,10 +86,8 @@ function App() {
     // On stocke nos scores en DB et on les update sur le front
     async function stockScore() {
       try {
-        console.log("mon score :", score);
         const response = await Axios({
           method: "POST",
-          // à remplacer par REACT_APP_API_URL en local
           url: `${APIURL}/scores`,
           data: {
             score
@@ -100,7 +95,7 @@ function App() {
         });
         if (response.status !== 200) return console.error("ERROR", response.error);
 
-        console.log(response.data.formattedScore);
+        // Je récupère le score du joueur et update mon state
         setPlayerScore(response.data.formattedScore);
 
       } catch (error) {
