@@ -12,6 +12,10 @@
   color: white;
 }
 
+h1, h2 {
+  margin: 0.5rem 0;
+}
+
 .button {
   &_active {
     margin-top: 1rem;

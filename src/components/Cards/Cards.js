@@ -1,14 +1,14 @@
-import { useState, useEffect } from 'react';
-import { nanoid } from 'nanoid'; // lib pour générer un id safe et performant
-import './styles.scss';
-import createGrid from '../../utils/createGrid';
-import Line from '../Line/Line';
+import { useState, useEffect } from "react";
+import { nanoid } from "nanoid"; // lib pour générer un id safe et performant
+import "./styles.scss";
+import createGrid from "../../utils/createGrid";
+import Line from "../Line/Line";
 
 function Cards({ cards, game, matchedCards, setMatchedCards }) {
   // Ma grille dans laquelle je vais push mes lignes de cartes.
   const grid = createGrid(6, 6, cards);
-  const [firstCard, setFirstCard] = useState(''); // On stocke la première carte retournée
-  const [secondCard, setSecondCard] = useState(''); // On stocke la seconde carte retournée
+  const [firstCard, setFirstCard] = useState(""); // On stocke la première carte retournée
+  const [secondCard, setSecondCard] = useState(""); // On stocke la seconde carte retournée
 
   useEffect(() => {
     // On regarde si les 2 cartes retournées forment une paire.

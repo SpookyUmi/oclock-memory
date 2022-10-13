@@ -1,0 +1,26 @@
+.scores {
+  display: flex;
+  padding-bottom: 1rem;
+  &_element {
+    display: block;
+    padding: 5px;
+    background-color: pink;
+    margin: 0.5rem;
+    border-radius: 5px;
+  }
+}
+
+.position_0 {
+  background-color: #c48b00;
+}
+.position_1 {
+  background-color: #9b9b9b;
+}
+.position_2 {
+  background-color: #7f4300;
+}
+
+h2 {
+  font-size: 2rem;
+  margin: 0.5rem;
+}

@@ -1,10 +1,10 @@
-import './styles.scss';
+import "./styles.scss";
 
 function Line({ row, game, firstCard, setFirstCard, secondCard, setSecondCard, matchedCards }) {
 
   // Fonction pour vérifier dans quel cas retourner une carte.
   function canDisplayCard(cardName) {
-    //
+    // si la paire a été trouvée, on l'affiche. Et on affiche aussi les cartes actuellement retournées, évidemment.
     return matchedCards.includes(cardName) || firstCard === cardName || secondCard === cardName;
   }
 
@@ -15,8 +15,8 @@ function Line({ row, game, firstCard, setFirstCard, secondCard, setSecondCard, m
           <article
             id={card._id}
             key={card.name}
-            // commenter la ternaire ici
-            className={`card ${game && canDisplayCard(card.name) ? 'active' : 'inactive'}`}
+            // On attribue une classe quand on veut afficher la carte ou non.
+            className={`card ${game && canDisplayCard(card.name) ? "active" : "inactive"}`}
             onClick={() => {
               if (game) {
                 if (firstCard && secondCard) {
@@ -32,6 +32,7 @@ function Line({ row, game, firstCard, setFirstCard, secondCard, setSecondCard, m
                 }
               }
             }}
+            // On assure le bon positionnement de notre image sprite
             style={{ backgroundPositionY: `-${card.offset * 100}px` }}
           ></article>
         )

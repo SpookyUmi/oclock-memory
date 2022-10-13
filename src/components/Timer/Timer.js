@@ -1,5 +1,5 @@
-import { useEffect, useState } from 'react';
-import './styles.scss';
+import { useEffect, useState } from "react";
+import "./styles.scss";
 
 function Timer({ game, setGameStatus, score, timer, matchedCards, setScore, setLoose, numberOfCards }) {
   // On crée un compteur
@@ -23,13 +23,13 @@ function Timer({ game, setGameStatus, score, timer, matchedCards, setScore, setL
   }, [game, setGameStatus, counter, setCounter, timer, matchedCards, score, setScore, setLoose]);
 
   return (
-    <>
-      <div>Countdown: {counter}</div>
+    <section className="timer">
+      <div className="timer_min">Vous avez 2min30 pour trouver toutes les paires ! Bonne chance ✨</div>
       <section className="timer_container">
         {/* Un petit calcul pour que notre compteur s'écoule visuellement */}
-        <div className="timer" style={{ width: `${100 - (100 / timer) * counter}%` }}></div>
+        <div className="timer_progress" style={{ width: `${100 - (100 / timer) * counter}%` }}></div>
       </section>
-    </>
+    </section>
   );
 }
 
