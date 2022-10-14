@@ -119,26 +119,31 @@ function App() {
         <h1>Memory Game</h1>
         <Scores bestScores={bestScores} />
       </header>
+      {!cards && <p>Le serveur se réveille, les cartes arrivent...</p>}
       {playerScore && <p>Votre score de la partie précédente : {playerScore}</p>}
-      <button onClick={() => {
-        setGame(true);
-      }} className={`${game ? "button_inactive" : "button_active"}`}>Lancer une partie</button>
-      {cards && <Cards
-        game={game}
-        cards={cards}
-        matchedCards={matchedCards}
-        setMatchedCards={setMatchedCards}
-      />}
-      <Timer
-        game={game}
-        gameStatus={gameStatus}
-        setGameStatus={setGameStatus}
-        setScore={setScore}
-        matchedCards={matchedCards}
-        timer={timer}
-        score={score}
-        numberOfCards={cards?.length}
-      />
+      {cards && (
+        <>
+          <button onClick={() => {
+            setGame(true);
+          }} className={`${game ? "button_inactive" : "button_active"}`}>Lancer une partie</button>
+          <Cards
+            game={game}
+            cards={cards}
+            matchedCards={matchedCards}
+            setMatchedCards={setMatchedCards}
+          />
+          <Timer
+            game={game}
+            gameStatus={gameStatus}
+            setGameStatus={setGameStatus}
+            setScore={setScore}
+            matchedCards={matchedCards}
+            timer={timer}
+            score={score}
+            numberOfCards={cards?.length}
+          />
+        </>
+      )}
     </div>
   );
 }
